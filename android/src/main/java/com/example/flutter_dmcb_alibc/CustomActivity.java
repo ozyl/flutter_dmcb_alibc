@@ -82,7 +82,7 @@ public class CustomActivity extends AppCompatActivity {
                 Log.d("substring", "授权成功 " + JSON.toJSONString(main));
                 runOnUiThread(() -> {
                     finish();
-                    overridePendingTransition(R.anim.triver_fade_in, R.anim.triver_fade_out);
+                    overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
                 });
             }
 
@@ -96,7 +96,7 @@ public class CustomActivity extends AppCompatActivity {
                 mResult.success(main);
                 runOnUiThread(() -> {
                     finish();
-                    overridePendingTransition(R.anim.triver_fade_in, R.anim.triver_fade_out);
+                    overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
                 });
             }
         });

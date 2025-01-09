@@ -29,6 +29,7 @@ import com.baichuan.nb_trade.core.AlibcTradeSDK;
 import java.util.HashMap;
 import java.util.Map;
 
+import io.flutter.BuildConfig;
 import io.flutter.embedding.engine.plugins.FlutterPlugin;
 import io.flutter.embedding.engine.plugins.activity.ActivityAware;
 import io.flutter.embedding.engine.plugins.activity.ActivityPluginBinding;
@@ -154,7 +155,7 @@ public class FlutterDmcbAlibcPlugin implements FlutterPlugin, MethodCallHandler,
         params.put("open4GDownload", true);
         params.put("open5GDownload", true);
         AlibcCommonUtils.setOpenAnalysisTool(true);
-        AlibcTradeSDK.asyncInit(mAppContext, params, new AlibcTradeInitCallback() {
+        AlibcTradeSDK.init(mAppContext, params, new AlibcTradeInitCallback() {
             @Override
             public void onSuccess() {
                 Log.d("substring", "淘宝客初始化成功");
@@ -174,7 +175,7 @@ public class FlutterDmcbAlibcPlugin implements FlutterPlugin, MethodCallHandler,
                 mJSONObject.put("payload", "");
                 result.success(mJSONObject);
             }
-        });
+        },AlibcTradeSDK.InitStrategy.INIT);
     }
 
     /**

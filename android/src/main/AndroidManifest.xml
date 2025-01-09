@@ -3,14 +3,33 @@
     package="com.example.flutter_dmcb_alibc">
 
     <application
-        android:name=".App"
         android:networkSecurityConfig="@xml/network_security_config"
-        tools:replace="android:name"
         tools:targetApi="n">
         <activity
             android:name=".CustomActivity"
             android:exported="true"
             android:screenOrientation="behind"
             android:theme="@style/dialog_activity" />
+        <activity
+            android:name="com.alibaba.alibclinkpartner.smartlink.ALPEntranceActivity"
+            android:exported="false">
+        </activity>
+
+        <receiver
+            android:name="com.alibaba.baichuan.trade.biz.login.LoginBroadcastReceiver"
+            android:exported="false">
+        </receiver>
+        <receiver
+            android:name="com.alibaba.alibclogin.listener.LoginBroadcastReceiver"
+            android:exported="false">
+        </receiver>
+        <activity
+            android:name="com.taobao.avplayer.playercontrol.hiv.DialogActivity"
+            android:exported="false">
+        </activity>
+        <service
+            android:name="com.alibaba.triver.TRACCSService"
+            android:exported="false">
+        </service>
     </application>
 </manifest>
