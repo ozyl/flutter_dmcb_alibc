@@ -56,7 +56,7 @@ FOUNDATION_EXTERN NSString *const AlibcUTArgsKeyYBHPSS;
 
 FOUNDATION_EXTERN NSString *const AlibcUTArgsKeyYBHPSS_LABEL;
 
-#define AlibcTradeSDKVersion @"5.0.0.7"
+#define AlibcTradeSDKVersion @"5.0.0.17"
 
 @interface AlibcUT : NSObject
 
