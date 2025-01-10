@@ -16,6 +16,7 @@ A new Flutter project.
   s.source_files = 'Classes/**/*'
   s.dependency 'Flutter'
   s.platform = :ios, '10.0'
+  s.static_framework = true
 
   s.dependency 'SSZipArchive','2.4.3'
   s.dependency 'SDWebImage','5.12.5'
