@@ -72,7 +72,7 @@ public class FlutterDmcbAlibcPlugin implements FlutterPlugin, MethodCallHandler,
         } else if (call.method.equals("getUserInfo")) {
             getUserInfo(result);
         } else if (call.method.equals("logout")) {
-            logout();
+            logout(result);
         } else if (call.method.equals("isLogin")) {
             isLogin(result);
         } else if (call.method.equals("openByCode")) {
@@ -158,7 +158,7 @@ public class FlutterDmcbAlibcPlugin implements FlutterPlugin, MethodCallHandler,
         AlibcTradeSDK.init(mAppContext, params, new AlibcTradeInitCallback() {
             @Override
             public void onSuccess() {
-                Log.d("substring", "淘宝客初始化成功");
+//                Log.d("substring", "淘宝客初始化成功");
                 JSONObject mJSONObject = new JSONObject();
                 mJSONObject.put("code", "00000");
                 mJSONObject.put("message", "淘宝客初始化成功");
@@ -175,7 +175,7 @@ public class FlutterDmcbAlibcPlugin implements FlutterPlugin, MethodCallHandler,
                 mJSONObject.put("payload", "");
                 result.success(mJSONObject);
             }
-        },AlibcTradeSDK.InitStrategy.INIT);
+        }, AlibcTradeSDK.InitStrategy.INIT);
     }
 
     /**
@@ -185,13 +185,13 @@ public class FlutterDmcbAlibcPlugin implements FlutterPlugin, MethodCallHandler,
      */
     private void getUtdId(@NonNull Result result) {
         String utdId = AlibcTradeCommon.getUtdid();
-        Log.d("substring", "getUtdId" + utdId);
+//        Log.d("substring", "getUtdId" + utdId);
         result.success(utdId);
     }
 
     private void getUserInfo(@NonNull Result result) {
         Map<String, Object> map = AlibcLogin.getInstance().getUserInfo();
-        Log.d("substring", " getUserInfo " + JSON.toJSONString(map));
+//        Log.d("substring", " getUserInfo " + JSON.toJSONString(map));
         if (map == null) {
             JSONObject main = new JSONObject();
             main.put("code", "00000");
@@ -210,23 +210,31 @@ public class FlutterDmcbAlibcPlugin implements FlutterPlugin, MethodCallHandler,
         result.success(main);
     }
 
-    private void logout() {
+    private void logout(@NonNull Result result) {
+        JSONObject resultJson = new JSONObject();
         AlibcLogin.getInstance().logout(new AlibcLoginCallback() {
             @Override
             public void onSuccess(String s, String s1) {
-                Log.d("substring", "解绑成功");
+                resultJson.put("code", "00000");
+                resultJson.put("message", "解绑成功");
+                resultJson.put("payload", null);
+                result.success(resultJson);
             }
 
             @Override
             public void onFailure(int i, String s) {
                 Log.d("substring", "解绑失败");
+                resultJson.put("code", i);
+                resultJson.put("message", s);
+                resultJson.put("payload", "");
+                result.success(resultJson);
             }
         });
     }
 
     private void isLogin(@NonNull Result result) {
         boolean isLogin = AlibcLogin.getInstance().isLogin();
-        Log.d("substring", "isLogin" + isLogin);
+//        Log.d("substring", "isLogin" + isLogin);
         result.success(isLogin);
     }
 
@@ -242,10 +250,15 @@ public class FlutterDmcbAlibcPlugin implements FlutterPlugin, MethodCallHandler,
         String pid = call.argument("pid");
         String relationId = call.argument("relationId");
         String url = call.argument("url");
-        Log.d("substring", "openDetail" + id);
-        Log.d("substring", "openDetail" + pid);
-        Log.d("substring", "openDetail" + relationId);
-        Log.d("substring", "openDetail" + url);
+        String clientType = call.argument("clientType");
+        if (clientType == null) {
+            clientType = "taobao";
+        }
+        String backUrl = call.argument("backUrl");
+//        Log.d("substring", "openDetail" + id);
+//        Log.d("substring", "openDetail" + pid);
+//        Log.d("substring", "openDetail" + relationId);
+//        Log.d("substring", "openDetail" + url);
         AlibcBizParams alibcBizParams = new AlibcBizParams();
         // 其他业务参数
         HashMap<String, String> extMap = new HashMap<>();
@@ -256,8 +269,8 @@ public class FlutterDmcbAlibcPlugin implements FlutterPlugin, MethodCallHandler,
 
         AlibcShowParams showParams = new AlibcShowParams();
         showParams.setOpenType(OpenType.Auto);
-        showParams.setClientType("taobao");
-        showParams.setBackUrl("szmf://");
+        showParams.setClientType(clientType);
+        showParams.setBackUrl(backUrl);
         showParams.setNewWindow(true);
         AlibcTaokeParams alibcTaokeParams = new AlibcTaokeParams(pid);
         alibcTaokeParams.pid = pid;
@@ -339,5 +352,8 @@ public class FlutterDmcbAlibcPlugin implements FlutterPlugin, MethodCallHandler,
 
     @Override
     public void onDetachedFromActivity() {
+        channel.setMethodCallHandler(null);
+        channel = null;
+        mActivity = null;
     }
 }

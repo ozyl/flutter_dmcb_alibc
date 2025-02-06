@@ -1,13 +1,12 @@
 package com.example.flutter_dmcb_alibc;
 
 import android.os.Bundle;
-import android.util.Log;
+import android.view.WindowManager;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.alibaba.alibclogin.AlibcLogin;
-import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.randy.alibcextend.auth.AuthCallback;
 import com.randy.alibcextend.auth.TopAuth;
@@ -18,8 +17,6 @@ import io.flutter.plugin.common.MethodCall;
 import io.flutter.plugin.common.MethodChannel;
 
 public class CustomActivity extends AppCompatActivity {
-
-    private int mResumeIndex = 0;
 
     private static MethodChannel.Result mResult;
 
@@ -37,9 +34,7 @@ public class CustomActivity extends AppCompatActivity {
         if ("authLogin".equals(method)) {
             authLogin();
         }
-        this.setFinishOnTouchOutside(true);
     }
-
 
     /**
      * 申请淘宝授权登录
@@ -47,21 +42,17 @@ public class CustomActivity extends AppCompatActivity {
     public void authLogin() {
         String appKey = mMethodCall.argument("appKey");
         if (appKey == null) {
-            appKey = "31528286";
+            appKey = "";
         }
-        Log.d("substring", " appKey " + appKey);
         String appName = mMethodCall.argument("appName");
         if (appName == null) {
-            appName = "魔方黑卡";
+            appName = "";
         }
-        Log.d("substring", " appName " + appName);
-        String appLogo = mMethodCall.argument("appLogo");
-        Log.d("substring", " appLogo " + appLogo);
         TopAuth.showAuthDialog(CustomActivity.this, R.mipmap.ic_launcher, appName, appKey, new AuthCallback() {
             @Override
             public void onSuccess(String token, String s) {
                 Map<String, Object> map = AlibcLogin.getInstance().getUserInfo();
-                Log.d("substring", " getUserInfo " + JSON.toJSONString(map));
+//                Log.d("substring", " getUserInfo " + JSON.toJSONString(map));
                 JSONObject mJSONObject = new JSONObject();
                 mJSONObject.put("nick", map.get("nick"));
                 mJSONObject.put("avatarUrl", "");
@@ -79,16 +70,15 @@ public class CustomActivity extends AppCompatActivity {
                 main.put("payload", mJSONObject);
 
                 mResult.success(main);
-                Log.d("substring", "授权成功 " + JSON.toJSONString(main));
+//                Log.d("substring", "授权成功 " + JSON.toJSONString(main));
                 runOnUiThread(() -> {
                     finish();
-                    overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
                 });
             }
 
             @Override
             public void onError(String s, String s1) {
-                Log.d("substring", "授权失败 " + s + s1);
+//                Log.d("substring", "授权失败 " + s + s1);
                 JSONObject main = new JSONObject();
                 main.put("code", s1);
                 main.put("message", s);
@@ -96,25 +86,17 @@ public class CustomActivity extends AppCompatActivity {
                 mResult.success(main);
                 runOnUiThread(() -> {
                     finish();
-                    overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
                 });
             }
         });
     }
 
     @Override
-    protected void onResume() {
-        mResumeIndex++;
-        super.onResume();
-        if (mResumeIndex > 1) {
+    public void onWindowFocusChanged(boolean hasFocus) {
+        super.onWindowFocusChanged(hasFocus);
+        if(hasFocus){
             finish();
         }
-    }
-
-    @Override
-    public void onBackPressed() {
-        Log.d("substring", "onBackPressed");
-        super.onBackPressed();
     }
 
     @Override
@@ -123,4 +105,5 @@ public class CustomActivity extends AppCompatActivity {
         mMethodCall = null;
         super.onDestroy();
     }
+
 }

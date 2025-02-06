@@ -55,8 +55,10 @@ class FlutterDmcbAlibc {
   }
 
   /// 退出登录
-  static void logout() {
-    _channel.invokeMethod('logout');
+  static Future<DmcbAlibcModel>  logout()async {
+    final json = await _channel.invokeMethod<Map>('logout');
+    final model = DmcbAlibcModel.formJson(json);
+    return model;
   }
 
   /// 是否已登录
@@ -105,12 +107,16 @@ class FlutterDmcbAlibc {
     required String id,
     required String pid,
     required String relationId,
+    String? backUrl,
+    String? clientType,
   }) async {
     final json = await _channel.invokeMethod<Map>('openByUrl', {
       "url": url,
       "id": id,
       'pid': pid,
       'relationId': relationId,
+      'backUrl': backUrl,
+      'clientType': clientType??"taobao",
     });
     final model = DmcbAlibcModel.formJson(json);
     return model;

@@ -20,5 +20,7 @@
         <item name="android:windowCloseOnTouchOutside">false</item>
         <!-- 无标题 有的手机设置这行代码 -->
         <item name="windowNoTitle">true</item>
+
+        <item name="android:windowAnimationStyle">@null</item>
     </style>
 </resources>
