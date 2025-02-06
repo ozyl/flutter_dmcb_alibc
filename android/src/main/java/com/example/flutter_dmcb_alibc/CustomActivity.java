@@ -1,6 +1,7 @@
 package com.example.flutter_dmcb_alibc;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.WindowManager;
 
 import androidx.annotation.Nullable;
@@ -94,15 +95,19 @@ public class CustomActivity extends AppCompatActivity {
     @Override
     public void onWindowFocusChanged(boolean hasFocus) {
         super.onWindowFocusChanged(hasFocus);
-        if(hasFocus){
+        if (hasFocus) {
             finish();
         }
     }
 
     @Override
     protected void onDestroy() {
-        mResult = null;
-        mMethodCall = null;
+        (new Handler(getMainLooper())).postDelayed(
+                () -> {
+                    mResult = null;
+                    mMethodCall = null;
+                }, 1000
+        );
         super.onDestroy();
     }
 
