@@ -5,14 +5,20 @@
     <application
         android:networkSecurityConfig="@xml/network_security_config"
         tools:targetApi="n">
+
         <activity
             android:name=".CustomActivity"
             android:exported="true"
             android:screenOrientation="behind"
             android:theme="@style/dialog_activity" />
-        <activity
-            android:name="com.alibaba.alibclinkpartner.smartlink.ALPEntranceActivity"
-            android:exported="false">
+
+        <activity android:name="com.alibaba.alibclinkpartner.smartlink.ALPEntranceActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.alibaba.intent.action.GETWAY"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <data android:host="linkpartner" android:pathPrefix="/entrance" android:scheme="tbopen"/>
+            </intent-filter>
         </activity>
 
         <receiver
