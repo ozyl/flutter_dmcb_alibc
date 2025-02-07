@@ -335,6 +335,7 @@ public class FlutterDmcbAlibcPlugin implements FlutterPlugin, MethodCallHandler,
     @Override
     public void onDetachedFromEngine(@NonNull FlutterPluginBinding binding) {
         channel.setMethodCallHandler(null);
+        channel = null;
     }
 
     @Override
@@ -352,8 +353,6 @@ public class FlutterDmcbAlibcPlugin implements FlutterPlugin, MethodCallHandler,
 
     @Override
     public void onDetachedFromActivity() {
-        channel.setMethodCallHandler(null);
-        channel = null;
         mActivity = null;
     }
 }
